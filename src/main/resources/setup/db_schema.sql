@@ -15,8 +15,8 @@ create TABLE IF NOT EXISTS `trade_master`(
   `type` varchar(50) NOT NULL,
   `user` json DEFAULT NULL,
 `symbol` varchar(100)CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
-`shares` bigint NOT NULL,
-`price` bigint NOT NULL,
+`shares` INT(10) NOT NULL,
+`price` DOUBLE(15,5) NOT NULL,
 `created_at` TIMESTAMP NOT NULL,
 `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY(`id`, `created_at`)
