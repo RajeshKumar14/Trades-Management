@@ -1,6 +1,7 @@
 package com.simpragma.TradesManagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.simpragma.TradesManagement.dto.DBOperationsStatus;
 import com.simpragma.TradesManagement.dto.TradeApiRequest;
@@ -57,7 +58,7 @@ public class TradePersistenceService {
     public DBOperationsStatus getAllTrade() {
         DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
         try {
-            dbOperationsStatus.setData(tradeRepository.findAll());
+            dbOperationsStatus.setData(tradeRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
             dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_SUCCESS);
         } catch (Exception e) {
             String message = "Error in getting all Trade Data from DB:";
