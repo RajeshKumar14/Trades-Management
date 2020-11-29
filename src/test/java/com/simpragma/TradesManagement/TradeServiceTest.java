@@ -50,8 +50,15 @@ public class TradeServiceTest {
     @Test
     public void testGetAllTrade() {
         TradeStatus tradeStatus = tradeService.getAllTrade();
-        log.info("All Trade Data:{}", new Gson().toJson(tradeStatus.getData()));
+        log.info("All Trade Data in ASC Order:{}", new Gson().toJson(tradeStatus.getData()));
         Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_SUCCESS));
+    }
+
+    @Test
+    public void testGetAllTradeDataByUserId() {
+        TradeStatus tradeStatus = tradeService.getAllTradeDataByUserId(1);
+        log.info("All Trade Data By User Id:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_USER_ID_SUCCESS));
     }
 
 

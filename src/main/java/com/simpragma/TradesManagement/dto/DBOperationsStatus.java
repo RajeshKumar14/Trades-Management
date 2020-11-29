@@ -22,6 +22,8 @@ public class DBOperationsStatus {
         ALL_TRADE_NOT_DELETED,
         GET_ALL_TRADE_SUCCESS,
         GET_ALL_TRADE_FAIL,
+        GET_ALL_TRADE_DATA_BY_USER_ID_SUCCESS,
+        GET_ALL_TRADE_DATA_BY_USER_ID_FAIL,
     }
 
     @JsonProperty ("status")

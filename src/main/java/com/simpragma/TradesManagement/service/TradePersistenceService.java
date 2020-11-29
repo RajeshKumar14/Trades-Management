@@ -67,4 +67,17 @@ public class TradePersistenceService {
         }
         return dbOperationsStatus;
     }
+
+    public DBOperationsStatus getAllTradeDataByUserId(long userId) {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            dbOperationsStatus.setData(tradeRepository.getAllTradeDataByUserId(userId));
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_USER_ID_SUCCESS);
+        } catch (Exception e) {
+            String message = "Error in getting all Trade Data by user id from DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_USER_ID_FAIL);
+        }
+        return dbOperationsStatus;
+    }
 }

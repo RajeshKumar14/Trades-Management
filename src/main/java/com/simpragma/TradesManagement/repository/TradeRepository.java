@@ -1,5 +1,6 @@
 package com.simpragma.TradesManagement.repository;
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,7 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
     @Query ("update Trade t set t.type =:type,t.user=:user,t.symbol=:symbol,t.shares=:shares,t.price=:price  where t.id=:id")
     public void updateTradeById(@Param ("type") String type, @Param ("user") String user, @Param ("symbol") String symbol,
             @Param ("shares") int shares, @Param ("price") double price, @Param ("id") long id);
+
+    @Query (value = "SELECT * FROM trade_master t where t.user->>'$.id'=:userId  ORDER BY id DESC",nativeQuery = true)
+    public List<Trade> getAllTradeDataByUserId(@Param ("userId") long userId);
 }

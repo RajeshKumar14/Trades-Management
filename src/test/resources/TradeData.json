@@ -2,7 +2,7 @@
   "id": 1,
   "type": "buy",
   "user": {
-    "id": 1,
+    "id": 2,
     "name": "Rajesh"
   },
   "symbol": "AC",
