@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.gson.Gson;
 import com.simpragma.TradesManagement.dto.ApiResponse;
 import com.simpragma.TradesManagement.dto.TradeApiRequest;
 import com.simpragma.TradesManagement.dto.TradeStatus;

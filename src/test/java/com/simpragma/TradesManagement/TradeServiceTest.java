@@ -17,7 +17,7 @@ import com.simpragma.TradesManagement.service.TradeService;
 import com.simpragma.TradesManagement.utils.FileParser;
 import lombok.extern.slf4j.Slf4j;
 
-//@Ignore
+@Ignore
 @Slf4j
 @RunWith (SpringRunner.class)
 @SpringBootTest

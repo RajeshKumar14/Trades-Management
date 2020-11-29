@@ -1,0 +1,183 @@
+{
+	"info": {
+		"_postman_id": "4ae7512f-cef2-4c39-9297-037e14dae4bc",
+		"name": "TradeManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "deleteAllTrade",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/trade",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createTrade",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 8,\n  \"type\": \"Sel\",\n  \"user\": {\n    \"id\": 1,\n    \"name\": \"Rajesh\"\n  },\n  \"symbol\": \"AC\",\n  \"shares\": 28,\n  \"price\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/trade",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTrade",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/trade",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTradeDataByUserId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/trade/users/2",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllTradeDataByStockSymbolAndTradeType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/trade/stocks/AC/trades?type=buy&start=2020-11-29&end=2020-11-30",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade",
+						"stocks",
+						"AC",
+						"trades"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "buy"
+						},
+						{
+							"key": "start",
+							"value": "2020-11-29"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getStockHighestAndLowestPriceByStockSymbol",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/trade/stocks/AC/price?start=2020-11-30&end=2020-11-30",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"trade",
+						"stocks",
+						"AC",
+						"price"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "2020-11-30"
+						},
+						{
+							"key": "end",
+							"value": "2020-11-30"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
