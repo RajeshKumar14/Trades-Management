@@ -81,15 +81,42 @@ public class TradePersistenceService {
         return dbOperationsStatus;
     }
 
-    public DBOperationsStatus getAllTradeDataByStockSymbolAndTradeType(String symbol, String type,String start,String end) {
+    public DBOperationsStatus getAllTradeDataByStockSymbolAndTradeType(String symbol, String type, String start, String end) {
         DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
         try {
-            dbOperationsStatus.setData(tradeRepository.getAllTradeDataByStockSymbolAndTradeType(symbol, type,start,end));
+            dbOperationsStatus.setData(tradeRepository.getAllTradeDataByStockSymbolAndTradeType(symbol, type, start, end));
             dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS);
         } catch (Exception e) {
-            String message = "Error in getting all Trade Data by stock symbol and trade type from DB:";
+            String message = "Error in getting all Trade Data by stock symbol, trade type and date range from DB:";
             log.error(message, e);
             dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_FAIL);
+        }
+        return dbOperationsStatus;
+    }
+
+    public DBOperationsStatus getStockHighestAndLowestPriceByStockSymbol(String symbol, String start, String end) {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            dbOperationsStatus.setData(tradeRepository.getStockHighestAndLowestPriceByStockSymbol(symbol, start, end));
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_STOCK_HIGHEST_AND_LOWEST_PRICE_BY_SYMBOL_AND_DATE_RANGE_SUCCESS);
+        } catch (Exception e) {
+            String message = "Error in getting all Trade Data by stock symbol and date range from DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_STOCK_HIGHEST_AND_LOWEST_PRICE_BY_SYMBOL_AND_DATE_RANGE_FAIL);
+        }
+        return dbOperationsStatus;
+    }
+
+    public DBOperationsStatus isExistStockSymbol(String symbol) {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            if (!tradeRepository.isExistStockSymbol(symbol)) {
+                dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.STOCK_SYMBOL_NOT_AVAILABLE);
+            }
+        } catch (Exception e) {
+            String message = "Error in checking stock symbol in DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.IS_STOCK_SYMBOL_AVAILABLE_FAIL);
         }
         return dbOperationsStatus;
     }

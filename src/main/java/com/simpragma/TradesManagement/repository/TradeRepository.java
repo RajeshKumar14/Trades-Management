@@ -18,7 +18,15 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
     @Query (value = "SELECT * FROM trade_master t where t.user->>'$.id'=:userId  ORDER BY id DESC", nativeQuery = true)
     public List<Trade> getAllTradeDataByUserId(@Param ("userId") long userId);
 
-    @Query (value = "SELECT * FROM trade_master t where t.symbol=:symbol AND t.type=:type AND t.created_at >=:start AND t.created_at <:end ORDER BY id DESC", nativeQuery = true)
+    @Query (value = "SELECT * FROM trade_master t where t.symbol=:symbol AND t.type=:type AND t.created_at >=:start AND t.created_at <:end ORDER BY id ASC", nativeQuery = true)
     public List<Trade> getAllTradeDataByStockSymbolAndTradeType(@Param ("symbol") String symbol, @Param ("type") String type,
             @Param ("start") String start, @Param ("end") String end);
+
+    @Query (value = "SELECT * FROM trade_master t where t.symbol=:symbol AND t.created_at >=:start AND t.created_at <:end ORDER BY price DESC", nativeQuery = true)
+    public List<Trade> getStockHighestAndLowestPriceByStockSymbol(@Param ("symbol") String symbol, @Param ("start") String start,
+            @Param ("end") String end);
+
+    @Query ("SELECT CASE WHEN COUNT(t)> 0 THEN true ELSE false END FROM Trade t WHERE t.symbol =:symbol")
+    public boolean isExistStockSymbol(@Param ("symbol") String symbol);
+
 }

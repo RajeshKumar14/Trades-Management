@@ -68,6 +68,29 @@ public class TradeServiceTest {
         Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS));
     }
 
+    @Test
+    public void testGetStockHighestAndLowestPriceByStockSymbol() {
+        TradeStatus tradeStatus = tradeService.getStockHighestAndLowestPriceByStockSymbol("A", "2020-11-29", "2020-11-30");
+        log.info("All Trade Data By Stock Symbol and Trade Type:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(
+                tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_STOCK_HIGHEST_AND_LOWEST_PRICE_BY_SYMBOL_AND_DATE_RANGE_SUCCESS));
+    }
+
+    @Test
+    public void testGetAllTradeDataByStockSymbolAndTradeTypeIfSymbolNotAvailable() {
+        TradeStatus tradeStatus = tradeService.getAllTradeDataByStockSymbolAndTradeType("A", "buy", "2020-11-29", "2020-11-30");
+        log.info("All Trade Data By Stock Symbol and Trade Type:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.STOCK_SYMBOL_NOT_AVAILABLE));
+    }
+
+    @Test
+    public void testGetStockHighestAndLowestPriceByStockSymbolIfSymbolNotAvailable() {
+        TradeStatus tradeStatus = tradeService.getStockHighestAndLowestPriceByStockSymbol("A", "2020-11-29", "2020-11-30");
+        log.info("All Trade Data By Stock Symbol and Trade Type:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(
+                tradeStatus.getStatus().equals(TradeStatus.tradeStatus.STOCK_SYMBOL_NOT_AVAILABLE));
+    }
+
     public TradeApiRequest prepareTradeForSave(JSONObject tradeJsonObject) {
         return new TradeApiRequest().builder().type(tradeJsonObject.get("type").toString()).user((JSONObject) tradeJsonObject.get("user"))
                                     .symbol(tradeJsonObject.get("symbol").toString()).shares(tradeJsonObject.get("shares").hashCode())
