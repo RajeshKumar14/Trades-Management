@@ -61,7 +61,12 @@ public class TradeServiceTest {
         Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_USER_ID_SUCCESS));
     }
 
-
+    @Test
+    public void testGetAllTradeDataByStockSymbolAndTradeType() {
+        TradeStatus tradeStatus = tradeService.getAllTradeDataByStockSymbolAndTradeType("AC", "buy", "2020-11-29", "2020-11-30");
+        log.info("All Trade Data By Stock Symbol and Trade Type:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS));
+    }
 
     public TradeApiRequest prepareTradeForSave(JSONObject tradeJsonObject) {
         return new TradeApiRequest().builder().type(tradeJsonObject.get("type").toString()).user((JSONObject) tradeJsonObject.get("user"))

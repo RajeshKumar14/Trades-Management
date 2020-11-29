@@ -99,6 +99,25 @@ public class TradeService {
         return tradeStatus;
     }
 
+    public TradeStatus getAllTradeDataByStockSymbolAndTradeType(String symbol, String type, String start, String end) {
+        TradeStatus tradeStatus = new TradeStatus();
+        try {
+            DBOperationsStatus dbOperationsStatus = tradePersistenceService.getAllTradeDataByStockSymbolAndTradeType(symbol, type, start, end);
+            if (dbOperationsStatus.getStatus()
+                                  .equals(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS)) {
+                List<Trade> tradeList = (List<Trade>) dbOperationsStatus.getData();
+                List<TradeData> tradeDataList = tradeList.stream().map(d -> prepareTradeData(d)).collect(Collectors.toList());
+                tradeStatus.setData(tradeDataList);
+                tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS);
+            } else {
+                tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_FAIL);
+            }
+        } catch (Exception e) {
+            tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_FAIL);
+        }
+        return tradeStatus;
+    }
+
     private TradeData prepareTradeData(Trade trade) {
         return new TradeData().builder().id(trade.getId()).type(trade.getType()).user(JSONValue.parse(trade.getUser())).symbol(trade.getSymbol())
                               .shares(trade.getShares()).price(trade.getPrice()).build();

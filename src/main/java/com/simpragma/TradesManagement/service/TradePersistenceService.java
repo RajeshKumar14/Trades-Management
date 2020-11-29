@@ -80,4 +80,17 @@ public class TradePersistenceService {
         }
         return dbOperationsStatus;
     }
+
+    public DBOperationsStatus getAllTradeDataByStockSymbolAndTradeType(String symbol, String type,String start,String end) {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            dbOperationsStatus.setData(tradeRepository.getAllTradeDataByStockSymbolAndTradeType(symbol, type,start,end));
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_SUCCESS);
+        } catch (Exception e) {
+            String message = "Error in getting all Trade Data by stock symbol and trade type from DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_DATA_BY_STOCK_SYMBOL_AND_TRADE_TYPE_FAIL);
+        }
+        return dbOperationsStatus;
+    }
 }

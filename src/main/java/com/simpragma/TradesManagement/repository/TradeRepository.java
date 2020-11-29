@@ -15,6 +15,10 @@ public interface TradeRepository extends JpaRepository<Trade, Long> {
     public void updateTradeById(@Param ("type") String type, @Param ("user") String user, @Param ("symbol") String symbol,
             @Param ("shares") int shares, @Param ("price") double price, @Param ("id") long id);
 
-    @Query (value = "SELECT * FROM trade_master t where t.user->>'$.id'=:userId  ORDER BY id DESC",nativeQuery = true)
+    @Query (value = "SELECT * FROM trade_master t where t.user->>'$.id'=:userId  ORDER BY id DESC", nativeQuery = true)
     public List<Trade> getAllTradeDataByUserId(@Param ("userId") long userId);
+
+    @Query (value = "SELECT * FROM trade_master t where t.symbol=:symbol AND t.type=:type AND t.created_at >=:start AND t.created_at <:end ORDER BY id DESC", nativeQuery = true)
+    public List<Trade> getAllTradeDataByStockSymbolAndTradeType(@Param ("symbol") String symbol, @Param ("type") String type,
+            @Param ("start") String start, @Param ("end") String end);
 }
