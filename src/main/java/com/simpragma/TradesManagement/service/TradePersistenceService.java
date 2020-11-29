@@ -28,20 +28,6 @@ public class TradePersistenceService {
         return dbOperationsStatus;
     }
 
-    public DBOperationsStatus updateTrade(TradeApiRequest tradeApiRequest) {
-        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
-        try {
-            tradeRepository.updateTradeById(tradeApiRequest.getType(), String.valueOf(tradeApiRequest.getUser()), tradeApiRequest.getSymbol(),
-                    tradeApiRequest.getShares(), tradeApiRequest.getPrice(), tradeApiRequest.getId());
-            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.TRADE_UPDATED);
-        } catch (Exception e) {
-            String message = "Error in updating Trade Data in DB:";
-            log.error(message, e);
-            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.TRADE_NOT_UPDATED);
-        }
-        return dbOperationsStatus;
-    }
-
     public DBOperationsStatus deleteAllTrade() {
         DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
         try {
@@ -110,13 +96,31 @@ public class TradePersistenceService {
     public DBOperationsStatus isExistStockSymbol(String symbol) {
         DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
         try {
-            if (!tradeRepository.isExistStockSymbol(symbol)) {
+            if (tradeRepository.isExistStockSymbol(symbol)) {
+                dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.STOCK_SYMBOL_AVAILABLE);
+            }else {
                 dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.STOCK_SYMBOL_NOT_AVAILABLE);
             }
         } catch (Exception e) {
             String message = "Error in checking stock symbol in DB:";
             log.error(message, e);
             dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.IS_STOCK_SYMBOL_AVAILABLE_FAIL);
+        }
+        return dbOperationsStatus;
+    }
+
+    public DBOperationsStatus isExistTrade(long id) {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            if (tradeRepository.existsById(id)) {
+                dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.CHECK_TRADE_DATA_EXIST_BY_ID_SUCCESS);
+            }else {
+                dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.CHECK_TRADE_DATA_NOT_EXIST_BY_ID_SUCCESS);
+            }
+        } catch (Exception e) {
+            String message = "Error in checking trade id is exist in DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.CHECK_TRADE_DATA_EXIST_BY_ID_FAIL);
         }
         return dbOperationsStatus;
     }

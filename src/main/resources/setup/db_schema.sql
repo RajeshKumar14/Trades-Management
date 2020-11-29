@@ -11,7 +11,7 @@ use trade_management;
 -- Dumping structure for table tat_automation.doccano_sampling_master
 drop table IF EXISTS `trade_master`;
 create TABLE IF NOT EXISTS `trade_master`(
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint unsigned NOT NULL,
   `type` varchar(50) NOT NULL,
   `user` json DEFAULT NULL,
 `symbol` varchar(100)CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
