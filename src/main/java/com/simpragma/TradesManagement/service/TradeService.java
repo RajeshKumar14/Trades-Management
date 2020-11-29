@@ -2,11 +2,15 @@ package com.simpragma.TradesManagement.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.simpragma.TradesManagement.dto.DBOperationsStatus;
 import com.simpragma.TradesManagement.dto.TradeApiRequest;
+import com.simpragma.TradesManagement.dto.TradeData;
 import com.simpragma.TradesManagement.dto.TradeStatus;
 import com.simpragma.TradesManagement.model.Trade;
 import lombok.extern.slf4j.Slf4j;
@@ -57,6 +61,29 @@ public class TradeService {
             tradeStatus.setStatus(TradeStatus.tradeStatus.ALL_TRADE_NOT_DELETED);
         }
         return tradeStatus;
+    }
+
+    public TradeStatus getAllTrade() {
+        TradeStatus tradeStatus = new TradeStatus();
+        try {
+            DBOperationsStatus dbOperationsStatus = tradePersistenceService.getAllTrade();
+            if (dbOperationsStatus.getStatus().equals(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_SUCCESS)) {
+                List<Trade> tradeList = (List<Trade>) dbOperationsStatus.getData();
+                List<TradeData> tradeDataList = tradeList.stream().map(d -> prepareTradeData(d)).collect(Collectors.toList());
+                tradeStatus.setData(tradeDataList);
+                tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_SUCCESS);
+            } else {
+                tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_FAIL);
+            }
+        } catch (Exception e) {
+            tradeStatus.setStatus(TradeStatus.tradeStatus.GET_ALL_TRADE_FAIL);
+        }
+        return tradeStatus;
+    }
+
+    private TradeData prepareTradeData(Trade trade) {
+        return new TradeData().builder().id(trade.getId()).type(trade.getType()).user(JSONValue.parse(trade.getUser())).symbol(trade.getSymbol())
+                              .shares(trade.getShares()).price(trade.getPrice()).build();
     }
 
     private Trade prepareTradeForSave(TradeApiRequest tradeApiRequest) {

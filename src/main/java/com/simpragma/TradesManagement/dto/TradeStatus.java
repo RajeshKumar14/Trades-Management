@@ -20,8 +20,13 @@ public class TradeStatus {
         TRADE_NOT_UPDATED,
         ALL_TRADE_DELETED,
         ALL_TRADE_NOT_DELETED,
+        GET_ALL_TRADE_SUCCESS,
+        GET_ALL_TRADE_FAIL,
     }
 
     @JsonProperty ("status")
     private tradeStatus status;
+
+    @JsonProperty ("data")
+    private Object data;
 }

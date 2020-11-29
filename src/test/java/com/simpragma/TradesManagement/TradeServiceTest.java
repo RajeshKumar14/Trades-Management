@@ -47,6 +47,13 @@ public class TradeServiceTest {
         Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.ALL_TRADE_DELETED));
     }
 
+    @Test
+    public void testGetAllTrade() {
+        TradeStatus tradeStatus = tradeService.getAllTrade();
+        log.info("All Trade Data:{}", new Gson().toJson(tradeStatus.getData()));
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.GET_ALL_TRADE_SUCCESS));
+    }
+
     public TradeApiRequest prepareTradeForSave(JSONObject tradeJsonObject) {
         return new TradeApiRequest().builder().type(tradeJsonObject.get("type").toString()).user((JSONObject) tradeJsonObject.get("user"))
                                     .symbol(tradeJsonObject.get("symbol").toString()).shares(tradeJsonObject.get("shares").hashCode())
@@ -59,6 +66,5 @@ public class TradeServiceTest {
                                     .shares(tradeJsonObject.get("shares").hashCode())
                                     .price(Double.parseDouble(tradeJsonObject.get("price").toString())).build();
     }
-
 
 }

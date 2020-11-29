@@ -40,6 +40,7 @@ public class TradePersistenceService {
         }
         return dbOperationsStatus;
     }
+
     public DBOperationsStatus deleteAllTrade() {
         DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
         try {
@@ -49,6 +50,19 @@ public class TradePersistenceService {
             String message = "Error in deleting Trade Data from DB:";
             log.error(message, e);
             dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.ALL_TRADE_NOT_DELETED);
+        }
+        return dbOperationsStatus;
+    }
+
+    public DBOperationsStatus getAllTrade() {
+        DBOperationsStatus dbOperationsStatus = new DBOperationsStatus();
+        try {
+            dbOperationsStatus.setData(tradeRepository.findAll());
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_SUCCESS);
+        } catch (Exception e) {
+            String message = "Error in getting all Trade Data from DB:";
+            log.error(message, e);
+            dbOperationsStatus.setStatus(DBOperationsStatus.dbOperationsStatus.GET_ALL_TRADE_FAIL);
         }
         return dbOperationsStatus;
     }
