@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "type": "buy",
+  "user": {
+    "id": 2,
+    "name": "Rajesh"
+  },
+  "symbol": "AC",
+  "shares": 28,
+  "price": 162.17
+}
