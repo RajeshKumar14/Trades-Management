@@ -13,6 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TradeApiRequest {
+    private long id;
     private String type;
     private JSONObject user;
     private String symbol;

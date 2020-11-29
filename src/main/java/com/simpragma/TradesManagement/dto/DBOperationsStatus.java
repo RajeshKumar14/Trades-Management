@@ -15,7 +15,11 @@ import lombok.Setter;
 public class DBOperationsStatus {
     public enum dbOperationsStatus {
         TRADE_CREATED,
-        TRADE_NOT_CREATED
+        TRADE_NOT_CREATED,
+        TRADE_UPDATED,
+        TRADE_NOT_UPDATED,
+        ALL_TRADE_DELETED,
+        ALL_TRADE_NOT_DELETED,
     }
 
     @JsonProperty ("status")

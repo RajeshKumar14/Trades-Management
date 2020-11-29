@@ -27,14 +27,38 @@ public class TradeServiceTest {
     public void testCreateTrade() {
         String resourceName = "TradeData.json";
         JSONObject tradeJsonObject = new FileParser().JsonFileToJSONObject(resourceName);
-        log.info("Trade Data Json :{}", new Gson().toJson(prepareTrade(tradeJsonObject)));
-        TradeStatus tradeStatus = tradeService.createTrade(prepareTrade(tradeJsonObject));
+        log.info("Trade Data Json :{}", new Gson().toJson(prepareTradeForSave(tradeJsonObject)));
+        TradeStatus tradeStatus = tradeService.createTrade(prepareTradeForSave(tradeJsonObject));
         Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.TRADE_CREATED));
     }
 
-    public TradeApiRequest prepareTrade(JSONObject tradeJsonObject) {
+    @Test
+    public void testUpdateTrade() {
+        String resourceName = "TradeData.json";
+        JSONObject tradeJsonObject = new FileParser().JsonFileToJSONObject(resourceName);
+        log.info("Trade Data Json :{}", new Gson().toJson(prepareTradeForUpdate(tradeJsonObject)));
+        TradeStatus tradeStatus = tradeService.createTrade(prepareTradeForUpdate(tradeJsonObject));
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.TRADE_UPDATED));
+    }
+
+    @Test
+    public void testDeleteAllTrade() {
+        TradeStatus tradeStatus = tradeService.deleteAllTrade();
+        Assert.assertTrue(tradeStatus.getStatus().equals(TradeStatus.tradeStatus.ALL_TRADE_DELETED));
+    }
+
+    public TradeApiRequest prepareTradeForSave(JSONObject tradeJsonObject) {
         return new TradeApiRequest().builder().type(tradeJsonObject.get("type").toString()).user((JSONObject) tradeJsonObject.get("user"))
                                     .symbol(tradeJsonObject.get("symbol").toString()).shares(tradeJsonObject.get("shares").hashCode())
                                     .price(Double.parseDouble(tradeJsonObject.get("price").toString())).build();
     }
+
+    public TradeApiRequest prepareTradeForUpdate(JSONObject tradeJsonObject) {
+        return new TradeApiRequest().builder().id(tradeJsonObject.get("id").hashCode()).type(tradeJsonObject.get("type").toString())
+                                    .user((JSONObject) tradeJsonObject.get("user")).symbol(tradeJsonObject.get("symbol").toString())
+                                    .shares(tradeJsonObject.get("shares").hashCode())
+                                    .price(Double.parseDouble(tradeJsonObject.get("price").toString())).build();
+    }
+
+
 }

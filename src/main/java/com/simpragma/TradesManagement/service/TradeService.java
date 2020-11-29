@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.simpragma.TradesManagement.dto.DBOperationsStatus;
 import com.simpragma.TradesManagement.dto.TradeApiRequest;
 import com.simpragma.TradesManagement.dto.TradeStatus;
@@ -16,15 +17,25 @@ public class TradeService {
     @Autowired
     private TradePersistenceService tradePersistenceService;
 
+    @Transactional
     public TradeStatus createTrade(TradeApiRequest tradeApiRequest) {
         TradeStatus tradeStatus = new TradeStatus();
         try {
-            Trade trade = prepareTrade(tradeApiRequest);
-            DBOperationsStatus dbOperationsStatus = tradePersistenceService.createTrade(trade);
-            if (dbOperationsStatus.getStatus().equals(DBOperationsStatus.dbOperationsStatus.TRADE_CREATED)) {
-                tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_CREATED);
+            if (tradeApiRequest.getId() > 0) {
+                DBOperationsStatus dbOperationsStatus = tradePersistenceService.updateTrade(tradeApiRequest);
+                if (dbOperationsStatus.getStatus().equals(DBOperationsStatus.dbOperationsStatus.TRADE_UPDATED)) {
+                    tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_UPDATED);
+                } else {
+                    tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_NOT_UPDATED);
+                }
             } else {
-                tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_NOT_CREATED);
+                Trade trade = prepareTradeForSave(tradeApiRequest);
+                DBOperationsStatus dbOperationsStatus = tradePersistenceService.createTrade(trade);
+                if (dbOperationsStatus.getStatus().equals(DBOperationsStatus.dbOperationsStatus.TRADE_CREATED)) {
+                    tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_CREATED);
+                } else {
+                    tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_NOT_CREATED);
+                }
             }
         } catch (Exception e) {
             tradeStatus.setStatus(TradeStatus.tradeStatus.TRADE_NOT_CREATED);
@@ -32,9 +43,25 @@ public class TradeService {
         return tradeStatus;
     }
 
-    private Trade prepareTrade(TradeApiRequest tradeApiRequest) {
+    @Transactional
+    public TradeStatus deleteAllTrade() {
+        TradeStatus tradeStatus = new TradeStatus();
+        try {
+            DBOperationsStatus dbOperationsStatus = tradePersistenceService.deleteAllTrade();
+            if (dbOperationsStatus.getStatus().equals(DBOperationsStatus.dbOperationsStatus.ALL_TRADE_DELETED)) {
+                tradeStatus.setStatus(TradeStatus.tradeStatus.ALL_TRADE_DELETED);
+            } else {
+                tradeStatus.setStatus(TradeStatus.tradeStatus.ALL_TRADE_NOT_DELETED);
+            }
+        } catch (Exception e) {
+            tradeStatus.setStatus(TradeStatus.tradeStatus.ALL_TRADE_NOT_DELETED);
+        }
+        return tradeStatus;
+    }
+
+    private Trade prepareTradeForSave(TradeApiRequest tradeApiRequest) {
         return new Trade().builder().type(tradeApiRequest.getType()).user(String.valueOf(tradeApiRequest.getUser()))
                           .symbol(tradeApiRequest.getSymbol()).shares(tradeApiRequest.getShares()).price(tradeApiRequest.getPrice())
-                          .created_at(new Timestamp(new Date().getTime())).updated_at(new Timestamp(new Date().getTime())).build();
+                          .created_at(new Timestamp(new Date().getTime())).build();
     }
 }
